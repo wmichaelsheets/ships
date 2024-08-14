@@ -3,7 +3,9 @@
 
 /*Typography
 --------------------------------------------------------------*/
-body,
+body{
+	background-color: rgba(66, 146, 221, 0.829);
+},
 button,
 input,
 select,
