@@ -1,4 +1,4 @@
-import { getShippingShips } from "./database.js"
+import { getShippingShips, getHaulingShips} from "./database.js"
 
 
 export const shippingShips = () => {
@@ -6,7 +6,10 @@ export const shippingShips = () => {
     let shipsHTML = "<ul>"
 
     for (const ship of ships) {
-        shipsHTML += `<li>${ship.name}</li>`
+        shipsHTML += `<li 
+                        data-type="shippingShip"
+                        data-id=${ship.id} 
+                        >${ship.name}</li>`
     }
 
     shipsHTML += "</ul>"
@@ -14,18 +17,25 @@ export const shippingShips = () => {
     return shipsHTML
 }
 
-// document.addEventListener(
-//     "click",
-//     (clickEvent) => {
-//         const clickTarget = clickEvent.target
-//         const walkerId = clickTarget.dataset.walkerforeignkey
-      
-//         const allWalkers = getWalkers()
-//         for (const walker of allWalkers) {
-//            if (walker.id === parseInt(walkerId)) {
-//                 window.alert(`This pet is being walked by ${walker.name}`)
-//            }
-//         }
+document.addEventListener(
+    "click",
+    (clickEvent) => {
+        const itemClicked = clickEvent.target
+        
+             if (itemClicked.dataset.type ==="shippingShip") {
 
-//         }
-// )
+                const shipId = parseInt(itemClicked.dataset.id)
+                const haulers = getHaulingShips()
+                const shippingShip = getShippingShips().find(ship => ship.id === shipId)
+
+                if (shippingShip) {
+                    const hauler = haulers.find(hauler => hauler.id === shippingShip.haulerId)
+
+                     if (hauler) {
+        window.alert(
+          `${shippingShip.name} is being hauled by ${hauler.name}`
+        )
+      } 
+    }
+  }
+})
